@@ -3,7 +3,13 @@
   "name": "Auto Submit Form",
   "version": "1.0",
   "description": "Automatically submits a form based on a countdown timer.",
-  "permissions": ["activeTab"],
+  "permissions": ["activeTab", "offscreen"],
+  "web_accessible_resources": [
+    {
+      "resources": ["/sounds/mixkit-classic-alarm-995.wav"],
+      "matches": ["https://www.straightforwarddriving.com/*"]
+    }
+  ],
   "content_scripts": [
     {
       "matches": ["https://www.straightforwarddriving.com/*"],

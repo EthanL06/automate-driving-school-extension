@@ -30,20 +30,70 @@ function checkCountdown() {
   }
 }
 
-// Find the button with the title Mute and click it
-let muteButton = document.querySelector("button[title='Mute']");
-if (muteButton) {
-  muteButton.click();
+// Wait 2 seconds
+async function wait(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-// Check if the URL contains the slug "topic"
-if (!window.location.href.includes("topic")) {
-  const incompleteLink = document.querySelector("a.learndash-incomplete");
-  if (incompleteLink) {
-    console.log("Clicking incomplete link");
-    incompleteLink.click();
+(async function () {
+  await wait(1000);
+  console.log("Content script running");
+  // Find the button with the title Mute and click it
+  let muteButton = document.querySelector("button[title='Mute']");
+  if (muteButton) {
+    muteButton.click();
   }
-} else {
-  // Set an interval to check every second
-  setInterval(checkCountdown, 1000);
-}
+
+  // Check if the URL contains the slug "topic"
+  if (!window.location.href.includes("topic")) {
+    const incompleteLink = document.querySelector("a.learndash-incomplete");
+    if (incompleteLink) {
+      console.log("Clicking incomplete link");
+      incompleteLink.click();
+    } else if (window.location.href.includes("lessons")) {
+      const audio = new Audio(
+        chrome.runtime.getURL("/sounds/mixkit-classic-alarm-995.wav")
+      );
+
+      audio.addEventListener(
+        "ended",
+        function () {
+          this.currentTime = 0;
+          this.play();
+        },
+        { once: true }
+      );
+
+      audio.play();
+
+      await wait(10000);
+      alert("Finished chapter!");
+    }
+  } else {
+    // Set an interval to check every second
+    setInterval(checkCountdown, 1000);
+  }
+})();
+
+// // Find the button with the title Mute and click it
+// let muteButton = document.querySelector("button[title='Mute']");
+// if (muteButton) {
+//   muteButton.click();
+// }
+
+// // Check if the URL contains the slug "topic"
+// if (!window.location.href.includes("topic")) {
+//   const incompleteLink = document.querySelector("a.learndash-incomplete");
+//   if (incompleteLink) {
+//     console.log("Clicking incomplete link");
+//     incompleteLink.click();
+//   } else {
+//     const audio = new Audio("./sounds/mixkit-classic-alarm-995.wav");
+//     audio.play();
+//     alert("No incomplete link found");
+//     // Make a sound
+//   }
+// } else {
+//   // Set an interval to check every second
+//   setInterval(checkCountdown, 1000);
+// }
