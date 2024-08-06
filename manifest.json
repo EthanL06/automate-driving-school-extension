@@ -1,0 +1,13 @@
+{
+  "manifest_version": 3,
+  "name": "Auto Submit Form",
+  "version": "1.0",
+  "description": "Automatically submits a form based on a countdown timer.",
+  "permissions": ["activeTab"],
+  "content_scripts": [
+    {
+      "matches": ["https://www.straightforwarddriving.com/*"],
+      "js": ["content.js"]
+    }
+  ]
+}
